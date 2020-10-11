@@ -1,0 +1,17 @@
+{
+  "name": "day8-vault",
+  "version": "1.0.0",
+  "description": "day8-vault local deployment",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.1.0",
+    "ethers": "^5.0.17"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  },
+  "scripts": {
+    "deploy:local": "truffle deploy",
+    "console:testnet": "truffle console --network ropsten"
+  },
+  "license": "ISC"
+}
