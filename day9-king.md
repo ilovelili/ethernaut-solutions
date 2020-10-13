@@ -13,7 +13,7 @@ As the transaction sender, you are always susceptible to the following cases:
 
 ## Solution
 
-When you submit this `King.sol` instance back to level, Ethernaut will call this fallback function to regain Kingship. The key is to guarantee that Ethernaut’s transaction will fail, so you can remain King.
+When you submit this `King.sol` instance back, Ethernaut will call this fallback function to regain Kingship. The key is to guarantee that Ethernaut’s transaction will fail, so you can remain King.
 
 Notice inside this fallback function, there is a `king.transfer()`, which can fail if the current king is a malicious contract and refuses to withdraw.
 
