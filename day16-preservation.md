@@ -20,7 +20,7 @@
 
 **Hint**: If you can match up storage data locations between Contract A and Contract B, you can precisely manipulate the desired variables in Contract A.
 
-the `LibraryContract` is trying to modify the variable at index 0 but on the calling contract, index 0 is the address of timeZone1Library. So first you need to call `setTime()` to replace timeZone1Library with a malicious contract. In this malicious contract, setTime() which will modify index 3 which on the calling contract is the owner variable!
+The `LibraryContract` is trying to modify the variable at index 0 but on the calling contract, index 0 is the address of timeZone1Library. So first you need to call `setTime()` to replace timeZone1Library with a malicious contract. In this malicious contract, setTime() which will modify index 3 which on the calling contract is the owner variable!
 
 Deploy the malicious library contract
 Convert the address into uint.
@@ -56,7 +56,10 @@ contract LibraryContract {
   }
 }
 
+// first time call to set the timeZone1Library address to our malicious contract address
 await contract.setFirstTime("<insert uint value of your malicious library contract>")
-await contract.setFirstTime("<insert uint value of your player>)
+
+// second time call so that timeZone1Library.delegatecall will trigger our malicious setTime function and set the owner to ourselves
+await contract.setFirstTime("<insert uint value of your player>")
 
 ```
